@@ -26,8 +26,8 @@ jobs:
 
       - name: Run Postman collection
         run: |
-          newman run api-tests/collections/automation-exercise.postman_collection.json \
-            -e api-tests/environments/automation-exercise.postman_environment.json \
+          newman run api-tests/collections/automation-exercise.postman_collection.json\
+            -e api-tests/environments/PROD.postman_environment.json\
             -r cli,htmlextra \
             --reporter-htmlextra-export api-tests/reports/report.html
 
