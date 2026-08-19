@@ -1,0 +1,798 @@
+{
+  "info": {
+    "_postman_id": "595acb06-4058-4122-982a-53397e2547ca",
+    "name": "AUTOMATION EXERCISE",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "43183893",
+    "_collection_link": "https://go.postman.co/collection/43183893-595acb06-4058-4122-982a-53397e2547ca?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Get All Products List",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Status code\r",
+              "pm.test(\"Status code é 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "// 2. Response not empty and valid JSON\r",
+              "pm.test(\"Resposta é um JSON válido\", function () {\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "// 3. Estrutura do body - existe a chave \"products\"\r",
+              "pm.test(\"Resposta contém a chave 'products'\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.have.property(\"products\");\r",
+              "    pm.expect(jsonData.products).to.be.an(\"array\");\r",
+              "});\r",
+              "\r",
+              "// 4. List is not empty\r",
+              "pm.test(\"Lista de produtos não está vazia\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.products.length).to.be.above(0);\r",
+              "});\r",
+              "\r",
+              "// 5. Schema de cada produto\r",
+              "pm.test(\"Cada produto contém os campos obrigatórios\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    jsonData.products.forEach(function (product) {\r",
+              "        pm.expect(product).to.have.property(\"id\");\r",
+              "        pm.expect(product).to.have.property(\"name\");\r",
+              "        pm.expect(product).to.have.property(\"price\");\r",
+              "        pm.expect(product).to.have.property(\"brand\");\r",
+              "        pm.expect(product).to.have.property(\"category\");\r",
+              "    });\r",
+              "});\r",
+              "\r",
+              "// 6. Tipos de dados corretos\r",
+              "pm.test(\"Tipos de dados estão corretos\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    const produto = jsonData.products[0];\r",
+              "    pm.expect(produto.id).to.be.a(\"number\");\r",
+              "    pm.expect(produto.name).to.be.a(\"string\");\r",
+              "    pm.expect(produto.price).to.be.a(\"string\"); // essa API retorna price como string, ex: \"Rs. 500\"\r",
+              "    pm.expect(produto.brand).to.be.a(\"string\");\r",
+              "});\r",
+              "\r",
+              "// 7. Tempo de resposta aceitável\r",
+              "pm.test(\"Tempo de resposta é aceitável (< 2000ms)\", function () {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BaseURL}}api/productsList",
+          "host": [
+            "{{BaseURL}}api"
+          ],
+          "path": [
+            "productsList"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST To All Products List",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{BaseURL}}api/productsList",
+          "host": [
+            "{{BaseURL}}api"
+          ],
+          "path": [
+            "productsList"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Brands List",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BaseURL}}api/brandsList",
+          "host": [
+            "{{BaseURL}}api"
+          ],
+          "path": [
+            "brandsList"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PUT To All Brands List",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// 1. Status code\r",
+              "pm.test(\"Status code é 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "// 2. Resposta é JSON válido\r",
+              "pm.test(\"Resposta é um JSON válido\", function () {\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "// 3. Estrutura da resposta\r",
+              "pm.test(\"Resposta contém a chave 'products'\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.have.property(\"products\");\r",
+              "    pm.expect(jsonData.products).to.be.an(\"array\");\r",
+              "});\r",
+              "\r",
+              "// 4. Lista não vazia (esperado, já que \"tshirt\" deve ter resultado)\r",
+              "pm.test(\"Lista de produtos retornados não está vazia\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.products.length).to.be.above(0);\r",
+              "});\r",
+              "\r",
+              "// 5. Todos os produtos retornados são relevantes à busca\r",
+              "pm.test(\"Produtos retornados contêm o termo buscado no nome\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    const termoBuscado = pm.request.body.urlencoded.get(\"search_product\").toLowerCase();\r",
+              "    \r",
+              "    jsonData.products.forEach(function (product) {\r",
+              "        pm.expect(product.name.toLowerCase()).to.include(termoBuscado);\r",
+              "    });\r",
+              "});\r",
+              "\r",
+              "// 6. Schema de cada produto retornado\r",
+              "pm.test(\"Cada produto contém os campos obrigatórios\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    jsonData.products.forEach(function (product) {\r",
+              "        pm.expect(product).to.have.property(\"id\");\r",
+              "        pm.expect(product).to.have.property(\"name\");\r",
+              "        pm.expect(product).to.have.property(\"price\");\r",
+              "        pm.expect(product).to.have.property(\"brand\");\r",
+              "        pm.expect(product).to.have.property(\"category\");\r",
+              "    });\r",
+              "});\r",
+              "\r",
+              "// 7. Tempo de resposta\r",
+              "pm.test(\"Tempo de resposta é aceitável (< 2000ms)\", function () {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "search_product",
+              "value": "tshirt",
+              "type": "text",
+              "uuid": "05b63ab0-c07d-4f73-9519-9f54d9704a16"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{BaseURL}}api/brandsList",
+          "host": [
+            "{{BaseURL}}api"
+          ],
+          "path": [
+            "brandsList"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST To Search Product without search_product parameter",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{BaseURL}}api/searchProduct",
+          "host": [
+            "{{BaseURL}}api"
+          ],
+          "path": [
+            "searchProduct"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST To Verify Login with valid details",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "email",
+              "value": "testautomation@test.com.br",
+              "type": "text",
+              "uuid": "56dbff78-8d2a-4db7-898c-1ac36f1dd5af"
+            },
+            {
+              "key": "password",
+              "value": "abc123",
+              "type": "text",
+              "uuid": "0dcc4012-1702-462e-90b1-f861fc1a3f64"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{BaseURL}}api/verifyLogin",
+          "host": [
+            "{{BaseURL}}api"
+          ],
+          "path": [
+            "verifyLogin"
+          ],
+          "query": [
+            {
+              "key": "",
+              "value": null,
+              "type": "text",
+              "disabled": true
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DELETE To Verify Login",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "password",
+              "value": "abc123",
+              "type": "text",
+              "uuid": "e7f6da36-77f5-44eb-93df-db07b7b32a33"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{BaseURL}}api/verifyLogin",
+          "host": [
+            "{{BaseURL}}api"
+          ],
+          "path": [
+            "verifyLogin"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DELETE To Verify Login",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{BaseURL}}api/verifyLogin",
+          "host": [
+            "{{BaseURL}}api"
+          ],
+          "path": [
+            "verifyLogin"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST To Verify Login with invalid details",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "email",
+              "value": "asdasdsda",
+              "type": "text",
+              "uuid": "cbe7efa7-c06c-4c73-8069-765c8443d092"
+            },
+            {
+              "key": "password",
+              "value": "asdadasd",
+              "type": "text",
+              "uuid": "e3e72f4f-294d-44df-8cc1-4297a8b69355"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{BaseURL}}api/verifyLogin",
+          "host": [
+            "{{BaseURL}}api"
+          ],
+          "path": [
+            "verifyLogin"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST To Create/Register User Account",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Salva os dados usados na criação, pra reusar depois\r",
+              "pm.test(\"Usuário criado com sucesso\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.responseCode).to.eql(201);\r",
+              "});\r",
+              "\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "\r",
+              "const timestamp = Date.now();\r",
+              "pm.environment.set(\"user_email\", \"qa.oikawa.\" + timestamp + \"@teste.com\");\r",
+              "pm.environment.set(\"user_password\", \"SenhaForte123\");\r",
+              "pm.environment.set(\"user_name\", \"Oikawa Teste\");\r",
+              "pm.environment.set(\"user_title\", \"Mr\");\r",
+              "pm.environment.set(\"user_birth_date\", \"15\");\r",
+              "pm.environment.set(\"user_birth_month\", \"6\");\r",
+              "pm.environment.set(\"user_birth_year\", \"1995\");\r",
+              "pm.environment.set(\"user_firstname\", \"Oikawa\");\r",
+              "pm.environment.set(\"user_lastname\", \"QA\");\r",
+              "pm.environment.set(\"user_company\", \"AutomationExercise Tests\");\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "name",
+              "value": "{{user_name}}",
+              "type": "text",
+              "uuid": "cb63dc37-3292-4371-a024-64fb780b345d"
+            },
+            {
+              "key": "email",
+              "value": "{{user_email}}",
+              "type": "text",
+              "uuid": "36bdac38-8c1b-4250-a692-ff7549c6979a"
+            },
+            {
+              "key": "password",
+              "value": "{{user_password}}",
+              "type": "text",
+              "uuid": "96e004a6-8eaf-44fb-94cd-8accc0b23dd6"
+            },
+            {
+              "key": "title",
+              "value": "Mr",
+              "type": "text",
+              "uuid": "4101e984-23e2-4e04-9aa4-9af78a7fd591"
+            },
+            {
+              "key": "birth_date",
+              "value": "18",
+              "type": "text",
+              "uuid": "ae87fc99-fcbf-4fe9-b713-d03aae8b860e"
+            },
+            {
+              "key": "birth_month",
+              "value": "08",
+              "type": "text",
+              "uuid": "7431d9b5-5bef-442b-93ce-d5ea8f58710a"
+            },
+            {
+              "key": "birth_year",
+              "value": "1996",
+              "type": "text",
+              "uuid": "0be4fa97-3e60-48fc-b85f-b9b59759cdea"
+            },
+            {
+              "key": "firstname",
+              "value": "matheus",
+              "type": "text",
+              "uuid": "fff4a614-c8ad-410c-a17c-ca1c8aee7734"
+            },
+            {
+              "key": "lastname",
+              "value": "tester",
+              "type": "text",
+              "uuid": "b9f45e24-18a1-4a2e-a2f3-c47d941878ad"
+            },
+            {
+              "key": "company",
+              "value": "SDET",
+              "type": "text",
+              "uuid": "4f7f1965-a6eb-4cf8-909e-beabd8360be4"
+            },
+            {
+              "key": "address1",
+              "value": "STREET",
+              "type": "text",
+              "uuid": "3a3652e0-fed1-4f80-a6c1-95db379d31c8"
+            },
+            {
+              "key": "country",
+              "value": "Canada",
+              "type": "text",
+              "uuid": "7aaae97f-5350-4e7c-af76-2771284556a7"
+            },
+            {
+              "key": "zipcode",
+              "value": "151515",
+              "type": "text",
+              "uuid": "b870bf82-c328-4ec1-9976-25209bd8c078"
+            },
+            {
+              "key": "state",
+              "value": "ontario",
+              "type": "text",
+              "uuid": "aec3df32-5a2a-4fa7-94fe-b0023a481cd5"
+            },
+            {
+              "key": "city",
+              "value": "toronto",
+              "type": "text",
+              "uuid": "0fd91443-55c1-4e59-9ad4-590fa9908f4c"
+            },
+            {
+              "key": "mobile_number",
+              "value": "99999999",
+              "type": "text",
+              "uuid": "c69e84ae-6f3f-49c8-bfbb-df43d7db28ff"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{BaseURL}}api/createAccount",
+          "host": [
+            "{{BaseURL}}api"
+          ],
+          "path": [
+            "createAccount"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PUT METHOD To Update User Account",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code é 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Usuário atualizado com sucesso\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.responseCode).to.eql(200);\r",
+              "    pm.expect(jsonData.message).to.eql(\"User updated!\");\r",
+              "});\r",
+              "\r",
+              "// Atualiza a variável de senha, já que ela mudou\r",
+              "pm.environment.set(\"user_password\", pm.environment.get(\"user_password\") + \"_updated\");"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "name",
+              "value": "{{user_name}}",
+              "type": "text",
+              "uuid": "21dd7ba3-20a6-4242-8a99-f5679ce9760e"
+            },
+            {
+              "key": "email",
+              "value": "qa.oikawa.1786655525459@teste.com",
+              "type": "text",
+              "uuid": "18dbd195-4995-417c-9f3a-bcb8297d94d8"
+            },
+            {
+              "key": "password",
+              "value": "{{user_password}}_updated",
+              "type": "text",
+              "uuid": "fef6cbc4-38fc-4394-849c-353081cc38a2"
+            },
+            {
+              "key": "title",
+              "value": "Mr",
+              "type": "text",
+              "uuid": "317882eb-c018-406c-81c8-318646255e3b"
+            },
+            {
+              "key": "birth_date",
+              "value": "18",
+              "type": "text",
+              "uuid": "7ab5ed31-645d-49d4-b42e-31e75403c10d"
+            },
+            {
+              "key": "birth_month",
+              "value": "08",
+              "type": "text",
+              "uuid": "ea355283-e387-4d24-9563-172c4ae41088"
+            },
+            {
+              "key": "birth_year",
+              "value": "1996",
+              "type": "text",
+              "uuid": "770cfdda-707d-4baa-91d5-60f8c6727537"
+            },
+            {
+              "key": "firstname",
+              "value": "matheus",
+              "type": "text",
+              "uuid": "27dc1054-3f07-4509-9888-b8cff29edc96"
+            },
+            {
+              "key": "lastname",
+              "value": "tester",
+              "type": "text",
+              "uuid": "56188088-7bf4-4b68-ab4b-6b145f92bae9"
+            },
+            {
+              "key": "company",
+              "value": "SDET",
+              "type": "text",
+              "uuid": "bb327bcd-e1a9-42c2-8f0f-534c5ad094f3"
+            },
+            {
+              "key": "address1",
+              "value": "STREET",
+              "type": "text",
+              "uuid": "0f329596-4a75-4824-b603-73ed2c0dbd23"
+            },
+            {
+              "key": "country",
+              "value": "Australia",
+              "type": "text",
+              "uuid": "2b93da90-21a1-4ec0-98d6-3dc4bbedd362"
+            },
+            {
+              "key": "zipcode",
+              "value": "151515",
+              "type": "text",
+              "uuid": "74053395-6afb-4f57-bc6d-824a1c1cd7b7"
+            },
+            {
+              "key": "state",
+              "value": "new gales",
+              "type": "text",
+              "uuid": "6e8ecb06-9308-4530-a2be-08e5cd43cba1"
+            },
+            {
+              "key": "city",
+              "value": "Sydney",
+              "type": "text",
+              "uuid": "0736177b-59eb-4cec-a386-86c91bb7c66d"
+            },
+            {
+              "key": "mobile_number",
+              "value": "99999999",
+              "type": "text",
+              "uuid": "09353665-3778-4a1f-bcf1-8fbf1bee558a"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{BaseURL}}api/updateAccount",
+          "host": [
+            "{{BaseURL}}api"
+          ],
+          "path": [
+            "updateAccount"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DELETE METHOD To Delete User Account",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "email",
+              "value": "APITEST@TEST.COM.BR",
+              "type": "text",
+              "uuid": "ce748753-aa66-4f32-89a0-35918cb3ef21"
+            },
+            {
+              "key": "password",
+              "value": "abc123",
+              "type": "text",
+              "uuid": "27e0193a-d1d2-4551-bac2-f1926f3e0366"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{BaseURL}}api/deleteAccount",
+          "host": [
+            "{{BaseURL}}api"
+          ],
+          "path": [
+            "deleteAccount"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET user account detail by email",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BaseURL}}api/getUserDetailByEmail?email=testautomation@test.com.br",
+          "host": [
+            "{{BaseURL}}api"
+          ],
+          "path": [
+            "getUserDetailByEmail"
+          ],
+          "query": [
+            {
+              "key": "email",
+              "value": "testautomation@test.com.br"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PUT UPDATE",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "url": {
+          "raw": "{{BaseURL}}api/updateAccount?name=matheus&email=qa.oikawa.1786657221806@teste.com&password=abc123",
+          "host": [
+            "{{BaseURL}}api"
+          ],
+          "path": [
+            "updateAccount"
+          ],
+          "query": [
+            {
+              "key": "name",
+              "value": "matheus"
+            },
+            {
+              "key": "email",
+              "value": "qa.oikawa.1786657221806@teste.com"
+            },
+            {
+              "key": "password",
+              "value": "abc123"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "New Request",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{BaseURL}}api/getUserDetailByEmail?email={{user_email}}",
+          "host": [
+            "{{BaseURL}}api"
+          ],
+          "path": [
+            "getUserDetailByEmail"
+          ],
+          "query": [
+            {
+              "key": "email",
+              "value": "{{user_email}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "New Request",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "email",
+              "value": "{{user_email}}",
+              "type": "text",
+              "uuid": "47835887-7505-457a-8540-dde8b50c22c8"
+            },
+            {
+              "key": "password",
+              "value": "{{user_password}}",
+              "type": "text",
+              "uuid": "d8c23ac9-a657-4d5a-9c3f-7874c75bc5b4"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{BaseURL}}/api/verifyLogin",
+          "host": [
+            "{{BaseURL}}"
+          ],
+          "path": [
+            "api",
+            "verifyLogin"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
