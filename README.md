@@ -96,5 +96,5 @@ newman run api-tests/collections/automation-exercise.postman_collection.json \
 
 ## 👤 Autor
 
-**Oikawa** — QA Automation
-[LinkedIn](#) · [GitHub](#)
+**Matheus Oikawa** — QA Automation
+[LinkedIn](https://www.linkedin.com/in/matheus-oikawa/) · [GitHub](#)
