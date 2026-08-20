@@ -21,11 +21,13 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install robotframework robotframework-browser
+          sudo apt-get update
+          sudo apt-get install -y xvfb
+          pip install robotframework robotframework-browser faker
           rfbrowser init
 
       - name: Run Robot Framework tests
-        run: robot --outputdir results ui-tests/Tests/
+        run: xvfb-run --auto-servernum robot --outputdir results ui-tests/Tests/
 
       - name: Upload test results
         if: always()

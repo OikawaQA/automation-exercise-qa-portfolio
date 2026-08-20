@@ -87,6 +87,17 @@
     },
     {
       "name": "POST To All Products List",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Status code\r\npm.test(\"Status code é 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});"
+            ]
+          }
+        }
+      ],
       "request": {
         "method": "POST",
         "header": [],
@@ -104,6 +115,17 @@
     },
     {
       "name": "Get All Brands List",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Status code\r\npm.test(\"Status code é 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});"
+            ]
+          }
+        }
+      ],
       "request": {
         "method": "GET",
         "header": [],
@@ -125,60 +147,10 @@
         {
           "listen": "test",
           "script": {
-            "exec": [
-              "// 1. Status code\r",
-              "pm.test(\"Status code é 200\", function () {\r",
-              "    pm.response.to.have.status(200);\r",
-              "});\r",
-              "\r",
-              "// 2. Resposta é JSON válido\r",
-              "pm.test(\"Resposta é um JSON válido\", function () {\r",
-              "    pm.response.to.be.json;\r",
-              "});\r",
-              "\r",
-              "// 3. Estrutura da resposta\r",
-              "pm.test(\"Resposta contém a chave 'products'\", function () {\r",
-              "    const jsonData = pm.response.json();\r",
-              "    pm.expect(jsonData).to.have.property(\"products\");\r",
-              "    pm.expect(jsonData.products).to.be.an(\"array\");\r",
-              "});\r",
-              "\r",
-              "// 4. Lista não vazia (esperado, já que \"tshirt\" deve ter resultado)\r",
-              "pm.test(\"Lista de produtos retornados não está vazia\", function () {\r",
-              "    const jsonData = pm.response.json();\r",
-              "    pm.expect(jsonData.products.length).to.be.above(0);\r",
-              "});\r",
-              "\r",
-              "// 5. Todos os produtos retornados são relevantes à busca\r",
-              "pm.test(\"Produtos retornados contêm o termo buscado no nome\", function () {\r",
-              "    const jsonData = pm.response.json();\r",
-              "    const termoBuscado = pm.request.body.urlencoded.get(\"search_product\").toLowerCase();\r",
-              "    \r",
-              "    jsonData.products.forEach(function (product) {\r",
-              "        pm.expect(product.name.toLowerCase()).to.include(termoBuscado);\r",
-              "    });\r",
-              "});\r",
-              "\r",
-              "// 6. Schema de cada produto retornado\r",
-              "pm.test(\"Cada produto contém os campos obrigatórios\", function () {\r",
-              "    const jsonData = pm.response.json();\r",
-              "    jsonData.products.forEach(function (product) {\r",
-              "        pm.expect(product).to.have.property(\"id\");\r",
-              "        pm.expect(product).to.have.property(\"name\");\r",
-              "        pm.expect(product).to.have.property(\"price\");\r",
-              "        pm.expect(product).to.have.property(\"brand\");\r",
-              "        pm.expect(product).to.have.property(\"category\");\r",
-              "    });\r",
-              "});\r",
-              "\r",
-              "// 7. Tempo de resposta\r",
-              "pm.test(\"Tempo de resposta é aceitável (< 2000ms)\", function () {\r",
-              "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
-              "});"
-            ],
             "type": "text/javascript",
-            "packages": {},
-            "requests": {}
+            "exec": [
+              "// 1. Status code\r\npm.test(\"Status code é 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\n// 2. Resposta é JSON válido\r\npm.test(\"Resposta é um JSON válido\", function () {\r\n    pm.response.to.be.json;\r\n});\r\n\r\n\r\n\r\n// 3. Tempo de resposta\r\npm.test(\"Tempo de resposta é aceitável (< 2000ms)\", function () {\r\n    pm.expect(pm.response.responseTime).to.be.below(2000);\r\n});"
+            ]
           }
         }
       ],
@@ -190,9 +162,7 @@
           "urlencoded": [
             {
               "key": "search_product",
-              "value": "tshirt",
-              "type": "text",
-              "uuid": "05b63ab0-c07d-4f73-9519-9f54d9704a16"
+              "value": "tshirt"
             }
           ]
         },
@@ -210,6 +180,17 @@
     },
     {
       "name": "POST To Search Product without search_product parameter",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Status code\r\npm.test(\"Status code é 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});"
+            ]
+          }
+        }
+      ],
       "request": {
         "method": "POST",
         "header": [],
@@ -227,6 +208,17 @@
     },
     {
       "name": "POST To Verify Login with valid details",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Status code\r\npm.test(\"Status code é 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});"
+            ]
+          }
+        }
+      ],
       "request": {
         "method": "POST",
         "header": [],
@@ -235,15 +227,11 @@
           "urlencoded": [
             {
               "key": "email",
-              "value": "testautomation@test.com.br",
-              "type": "text",
-              "uuid": "56dbff78-8d2a-4db7-898c-1ac36f1dd5af"
+              "value": "testautomation@test.com.br"
             },
             {
               "key": "password",
-              "value": "abc123",
-              "type": "text",
-              "uuid": "0dcc4012-1702-462e-90b1-f861fc1a3f64"
+              "value": "abc123"
             }
           ]
         },
@@ -258,8 +246,7 @@
           "query": [
             {
               "key": "",
-              "value": null,
-              "type": "text",
+              "value": "",
               "disabled": true
             }
           ]
@@ -269,6 +256,17 @@
     },
     {
       "name": "DELETE To Verify Login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Status code\r\npm.test(\"Status code é 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});"
+            ]
+          }
+        }
+      ],
       "request": {
         "method": "POST",
         "header": [],
@@ -277,9 +275,7 @@
           "urlencoded": [
             {
               "key": "password",
-              "value": "abc123",
-              "type": "text",
-              "uuid": "e7f6da36-77f5-44eb-93df-db07b7b32a33"
+              "value": "abc123"
             }
           ]
         },
@@ -297,6 +293,17 @@
     },
     {
       "name": "DELETE To Verify Login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Status code\r\npm.test(\"Status code é 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});"
+            ]
+          }
+        }
+      ],
       "request": {
         "method": "DELETE",
         "header": [],
@@ -314,6 +321,17 @@
     },
     {
       "name": "POST To Verify Login with invalid details",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Status code\r\npm.test(\"Status code é 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});"
+            ]
+          }
+        }
+      ],
       "request": {
         "method": "POST",
         "header": [],
@@ -322,15 +340,11 @@
           "urlencoded": [
             {
               "key": "email",
-              "value": "asdasdsda",
-              "type": "text",
-              "uuid": "cbe7efa7-c06c-4c73-8069-765c8443d092"
+              "value": "asdasdsda"
             },
             {
               "key": "password",
-              "value": "asdadasd",
-              "type": "text",
-              "uuid": "e3e72f4f-294d-44df-8cc1-4297a8b69355"
+              "value": "asdadasd"
             }
           ]
         },
@@ -512,23 +526,10 @@
         {
           "listen": "test",
           "script": {
-            "exec": [
-              "pm.test(\"Status code é 200\", function () {\r",
-              "    pm.response.to.have.status(200);\r",
-              "});\r",
-              "\r",
-              "pm.test(\"Usuário atualizado com sucesso\", function () {\r",
-              "    const jsonData = pm.response.json();\r",
-              "    pm.expect(jsonData.responseCode).to.eql(200);\r",
-              "    pm.expect(jsonData.message).to.eql(\"User updated!\");\r",
-              "});\r",
-              "\r",
-              "// Atualiza a variável de senha, já que ela mudou\r",
-              "pm.environment.set(\"user_password\", pm.environment.get(\"user_password\") + \"_updated\");"
-            ],
             "type": "text/javascript",
-            "packages": {},
-            "requests": {}
+            "exec": [
+              "pm.test(\"Status code é 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"Usuário atualizado com sucesso\", function () {\r\n    const jsonData = pm.response.json();\r\n    pm.expect(jsonData.responseCode).to.eql(200);\r\n    pm.expect(jsonData.message).to.eql(\"User updated!\");\r\n});\r\n\r\n// Atualiza a variável de senha, já que ela mudou\r\npm.environment.set(\"user_password\", pm.environment.get(\"user_password\") + \"_updated\");"
+            ]
           }
         }
       ],
@@ -540,99 +541,67 @@
           "urlencoded": [
             {
               "key": "name",
-              "value": "{{user_name}}",
-              "type": "text",
-              "uuid": "21dd7ba3-20a6-4242-8a99-f5679ce9760e"
+              "value": "{{user_name}}"
             },
             {
               "key": "email",
-              "value": "qa.oikawa.1786655525459@teste.com",
-              "type": "text",
-              "uuid": "18dbd195-4995-417c-9f3a-bcb8297d94d8"
+              "value": "{{user_email}}"
             },
             {
               "key": "password",
-              "value": "{{user_password}}_updated",
-              "type": "text",
-              "uuid": "fef6cbc4-38fc-4394-849c-353081cc38a2"
+              "value": "{{user_password}}_updated"
             },
             {
               "key": "title",
-              "value": "Mr",
-              "type": "text",
-              "uuid": "317882eb-c018-406c-81c8-318646255e3b"
+              "value": "Mr"
             },
             {
               "key": "birth_date",
-              "value": "18",
-              "type": "text",
-              "uuid": "7ab5ed31-645d-49d4-b42e-31e75403c10d"
+              "value": "18"
             },
             {
               "key": "birth_month",
-              "value": "08",
-              "type": "text",
-              "uuid": "ea355283-e387-4d24-9563-172c4ae41088"
+              "value": "08"
             },
             {
               "key": "birth_year",
-              "value": "1996",
-              "type": "text",
-              "uuid": "770cfdda-707d-4baa-91d5-60f8c6727537"
+              "value": "1996"
             },
             {
               "key": "firstname",
-              "value": "matheus",
-              "type": "text",
-              "uuid": "27dc1054-3f07-4509-9888-b8cff29edc96"
+              "value": "matheus"
             },
             {
               "key": "lastname",
-              "value": "tester",
-              "type": "text",
-              "uuid": "56188088-7bf4-4b68-ab4b-6b145f92bae9"
+              "value": "tester"
             },
             {
               "key": "company",
-              "value": "SDET",
-              "type": "text",
-              "uuid": "bb327bcd-e1a9-42c2-8f0f-534c5ad094f3"
+              "value": "SDET"
             },
             {
               "key": "address1",
-              "value": "STREET",
-              "type": "text",
-              "uuid": "0f329596-4a75-4824-b603-73ed2c0dbd23"
+              "value": "STREET"
             },
             {
               "key": "country",
-              "value": "Australia",
-              "type": "text",
-              "uuid": "2b93da90-21a1-4ec0-98d6-3dc4bbedd362"
+              "value": "Australia"
             },
             {
               "key": "zipcode",
-              "value": "151515",
-              "type": "text",
-              "uuid": "74053395-6afb-4f57-bc6d-824a1c1cd7b7"
+              "value": "151515"
             },
             {
               "key": "state",
-              "value": "new gales",
-              "type": "text",
-              "uuid": "6e8ecb06-9308-4530-a2be-08e5cd43cba1"
+              "value": "new gales"
             },
             {
               "key": "city",
-              "value": "Sydney",
-              "type": "text",
-              "uuid": "0736177b-59eb-4cec-a386-86c91bb7c66d"
+              "value": "Sydney"
             },
             {
               "key": "mobile_number",
-              "value": "99999999",
-              "type": "text",
-              "uuid": "09353665-3778-4a1f-bcf1-8fbf1bee558a"
+              "value": "99999999"
             }
           ]
         },
@@ -650,6 +619,17 @@
     },
     {
       "name": "DELETE METHOD To Delete User Account",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Status code\r\npm.test(\"Status code é 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});"
+            ]
+          }
+        }
+      ],
       "request": {
         "method": "DELETE",
         "header": [],
@@ -658,15 +638,11 @@
           "urlencoded": [
             {
               "key": "email",
-              "value": "APITEST@TEST.COM.BR",
-              "type": "text",
-              "uuid": "ce748753-aa66-4f32-89a0-35918cb3ef21"
+              "value": "{{user_email}}"
             },
             {
               "key": "password",
-              "value": "abc123",
-              "type": "text",
-              "uuid": "27e0193a-d1d2-4551-bac2-f1926f3e0366"
+              "value": "{{user_password}}"
             }
           ]
         },
@@ -684,6 +660,17 @@
     },
     {
       "name": "GET user account detail by email",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Status code\r\npm.test(\"Status code é 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});"
+            ]
+          }
+        }
+      ],
       "request": {
         "method": "GET",
         "header": [],
@@ -700,95 +687,6 @@
               "key": "email",
               "value": "testautomation@test.com.br"
             }
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "PUT UPDATE",
-      "request": {
-        "method": "PUT",
-        "header": [],
-        "url": {
-          "raw": "{{BaseURL}}api/updateAccount?name=matheus&email=qa.oikawa.1786657221806@teste.com&password=abc123",
-          "host": [
-            "{{BaseURL}}api"
-          ],
-          "path": [
-            "updateAccount"
-          ],
-          "query": [
-            {
-              "key": "name",
-              "value": "matheus"
-            },
-            {
-              "key": "email",
-              "value": "qa.oikawa.1786657221806@teste.com"
-            },
-            {
-              "key": "password",
-              "value": "abc123"
-            }
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "New Request",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "{{BaseURL}}api/getUserDetailByEmail?email={{user_email}}",
-          "host": [
-            "{{BaseURL}}api"
-          ],
-          "path": [
-            "getUserDetailByEmail"
-          ],
-          "query": [
-            {
-              "key": "email",
-              "value": "{{user_email}}"
-            }
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "New Request",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "urlencoded",
-          "urlencoded": [
-            {
-              "key": "email",
-              "value": "{{user_email}}",
-              "type": "text",
-              "uuid": "47835887-7505-457a-8540-dde8b50c22c8"
-            },
-            {
-              "key": "password",
-              "value": "{{user_password}}",
-              "type": "text",
-              "uuid": "d8c23ac9-a657-4d5a-9c3f-7874c75bc5b4"
-            }
-          ]
-        },
-        "url": {
-          "raw": "{{BaseURL}}/api/verifyLogin",
-          "host": [
-            "{{BaseURL}}"
-          ],
-          "path": [
-            "api",
-            "verifyLogin"
           ]
         }
       },
