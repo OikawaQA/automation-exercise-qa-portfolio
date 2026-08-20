@@ -16,6 +16,5 @@ Scenario 1: Contact Form Submission
     Then Verify Get In Touch is Visible
     When Fill Contact Form
     And Upload File
-    Pause Execution
     Then Verify Success Message Is Visible
    
