@@ -45,7 +45,6 @@ Scenario 3: Search Products And Verify Cart After Login
     Then Verify Searched Product Is Visible    Blue Top  
     When Click On Add Product To Cart By ID    1  
     And Click On View Cart
-    Pause Execution
     Then Verify User Is Landed On View Cart Page
     When Login User With Valid Credentials
     Then Verify That User Is Logged In Successfully    ${Admin_Email}
